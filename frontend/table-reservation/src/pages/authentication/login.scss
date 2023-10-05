@@ -1,0 +1,121 @@
+.content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+
+    .login-form {
+        height: 100%;
+        width: 70%;
+        display: flex;
+        justify-content: center;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+
+            .header {
+                display: flex;
+                justify-content: center;
+                height: 20%;
+                align-items: flex-end;
+
+                h1 {
+                    height: fit-content;
+                    margin: 0;
+                }
+            }
+
+            .form-content {
+                display: flex;
+                flex-direction: column;
+                height: 50%;
+                width: 50%;
+                justify-content: center;
+                align-items: center;
+                align-self: center;
+
+                label {
+                    height: 1.5rem;
+                    font-size: 12px;
+                    width: 80%;
+                    margin-top: 2rem;
+
+                }
+
+                input {
+                    height: 2.3rem;
+                    width: 80%;
+                    margin: 0;
+                    font-family: inherit;
+                    font-weight: inherit;
+                    line-height: var(--inputLineHeight);
+                    border: none;
+                    border-bottom: 2px solid #F0F0F0;
+                    padding: 0;
+                }
+                input:focus{
+                    outline: none;
+                }
+                .div-rememberme {
+                    display: flex;
+                    justify-content: flex-end;
+                    font-size: 12px;
+                    width: 80%;
+
+                    input {
+                        width: 10%;
+                    }
+
+                }
+            }
+
+            .footer {
+                height: 30%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                button {
+                    height: 2.5rem;
+                    width: 8rem;
+                    appearance: none;
+                    background-color: #FAFBFC;
+                    border: 1px solid rgba(27, 31, 35, 0.15);
+                    border-radius: 6px;
+                    box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+                    box-sizing: border-box;
+                    color: #24292E;
+                    cursor: pointer;
+                    display: inline-block;
+                    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    list-style: none;
+                    padding: 6px 16px;
+                    position: relative;
+                    transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+                    user-select: none;
+                    -webkit-user-select: none;
+                    touch-action: manipulation;
+                    vertical-align: middle;
+                    white-space: nowrap;
+                    word-wrap: break-word;
+                }
+
+                button:hover {
+                    background-color: #F3F4F6;
+                    text-decoration: none;
+                    transition-duration: 0.1s;
+                }
+            }
+        }
+    }
+
+    .div-other {
+        height: 100%;
+        width: 30%;
+        background-color: aqua;
+    }
+}
