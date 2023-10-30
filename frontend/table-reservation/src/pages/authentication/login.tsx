@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./login.scss";
 
 import { Link, useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { loginUser } from "../../apis/authentication-api";
 import {
   LoginRequestModel,
-  LoginResponseModel,
 } from "../../classes/login_model";
-import { type } from "os";
 import useToken from "../../hooks/useToken";
 
 export default function Login() {
@@ -16,16 +14,9 @@ export default function Login() {
 
   const [errorMessage, setErrorMessage] = useState("")
   const [user, setUser] = useState(new LoginRequestModel());
-  const {tokenData, setToken} = useToken();
-
-  useEffect(() => {
-    if (tokenData.HasValue){
-        navigate("./../../dashboard")
-    }
-  }, [tokenData])
+  const {setToken} = useToken();
 
   const handleUserPassword = (event: React.FormEvent<HTMLInputElement>) => {
-    console.log(event)
     setUser({ ...user, Password: event.currentTarget.value });
   };
 

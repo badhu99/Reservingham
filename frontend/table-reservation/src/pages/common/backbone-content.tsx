@@ -1,10 +1,9 @@
 import "./backbone-content.scss";
 
-import { useEffect } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import useToken from "../hooks/useToken";
-import { Roles } from "../utils/enums/roles";
-import { AllowedAccessBool } from "../utils/helpers/allowed-access";
+import useToken from "../../hooks/useToken";
+import { Roles } from "../../utils/enums/roles";
+import { AllowedAccessBool } from "../../utils/helpers/guards/check-access";
 
 export default function BackboneContent() {
   let navigate = useNavigate();
@@ -13,14 +12,8 @@ export default function BackboneContent() {
 
   const deleteToken = () => {
     clearToken();
+    navigate("./../auth");
   };
-
-  useEffect(() => {
-    AllowedAccessBool([Roles.Editor], tokenData);
-    if (!tokenData.HasValue) {
-      navigate("./../auth");
-    }
-  }, [tokenData]);
 
   return (
     <div className="container">

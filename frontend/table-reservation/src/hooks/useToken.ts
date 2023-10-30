@@ -8,14 +8,14 @@ export default function useToken() {
 
   const saveToken = (userToken: string) => {
     sessionStorage.setItem(constToken, userToken);
-    // setToken(userToken);
     const userData = getTokenData();
-    setTokenData({...userData})
+    setTokenData(prevUserData => ({...prevUserData, ...userData}))
+    
   };
 
   const clearToken = () => {
     sessionStorage.removeItem(constToken);
-    setTokenData({...tokenData, aud: "",exp: 0, iat: 0, iss: "", sub: "", Id: "", Username: "", Roles: [], HasValue: false})
+    saveToken("");
   };
 
   const getTokenData = () : UserData => {
