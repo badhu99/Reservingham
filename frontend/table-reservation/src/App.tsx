@@ -1,30 +1,89 @@
-import React from 'react';
-import './App.scss';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import Login from './pages/authentication/login';
-import BackboneAuthentication from './pages/authentication/backbone-auth';
-import Registration from './pages/authentication/registration';
-import BackboneContent from './pages/backbone-content';
-import Dashboard from './pages/dashboard/dashboard';
-import Editor from './pages/editor/editor';
-import Reservations from './pages/reservations/reservations';
+import "./App.scss";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+import Login from "./pages/authentication/login";
+import BackboneAuthentication from "./pages/authentication/backbone-auth";
+import Registration from "./pages/authentication/registration";
+import BackboneContent from "./pages/common/backbone-content";
+import Dashboard from "./pages/dashboard/dashboard";
+import Editor from "./pages/editor/editor";
+import NotFound from "./pages/common/not-found";
+import AuthGuard from "./utils/helpers/guards/auth-guard";
+import { Roles } from "./utils/enums/roles";
+import Reservations from "./pages/reservations/reservations";
+import UnAuthGuard from "./utils/helpers/guards/un-auth-guard";
 
-function App() {
+const AuthRoutes = [
+  <Route
+    path=""
+    element={
+      <AuthGuard
+        allowedRoles={[Roles.Admin, Roles.Editor, Roles.User]}
+        element={<BackboneContent />}
+      />
+    }
+  >
+    <Route path="" element={<Navigate to="/dashboard" />} />
+    <Route
+      path="/dashboard"
+      element={
+        <AuthGuard allowedRoles={[Roles.User]} element={<Dashboard />} />
+      }
+    />
+    <Route
+      path="/reservations"
+      element={
+        <AuthGuard allowedRoles={[Roles.User]} element={<Reservations />} />
+      }
+    />
+    <Route
+      path="/editor"
+      element={
+        <AuthGuard allowedRoles={[Roles.Editor]} element={<Editor />} />
+      }
+    />
+    <Route
+      path="/admin"
+      element={
+        <AuthGuard allowedRoles={[Roles.Admin]} element={<Editor />} />
+      }
+    />
+  </Route>,
+];
+
+const UnAuthRoutes = [
+  <Route path="auth" element={<UnAuthGuard element={<BackboneAuthentication />} />}>
+    <Route path="" element={<Navigate to="/auth/signin" />} />
+    <Route
+      key="Login"
+      path="signin"
+      element={<UnAuthGuard element={<Login />} />}
+    />
+    <Route
+      key="Register"
+      path="signup"
+      element={<UnAuthGuard element={<Registration />} />}
+    />
+  </Route>,
+];
+
+const PublicRoutes = [
+  <Route path="not-found" element={<NotFound />} />,
+  <Route path="*" element={<Navigate to="/not-found" />} />
+]
+
+const App = () =>  {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="auth" element={<BackboneAuthentication />} >
-            <Route path='' element={<Navigate to="/auth/signin" />} />
-            <Route path="signin" element={<Login />} />
-            <Route path="signup" element={<Registration />} />
-          </Route>
-          <Route path="/" element={<BackboneContent />} >
-            <Route path='/' element={<Navigate to="/dashboard" />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="editor" element={<Editor />} />
-            <Route path="reservations" element={<Reservations />} />
-          </Route>
+          {AuthRoutes}
+          {UnAuthRoutes}
+          {PublicRoutes}
         </Routes>
       </BrowserRouter>
     </div>

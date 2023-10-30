@@ -1,10 +1,10 @@
 import React from "react"
 import useToken from "../../hooks/useToken";
 
-export default function Dashboard(){
+export default function Admin(){
     return (
         <>
-        <h1>Dashboard</h1>
+        <h1>Admin</h1>
         </>
     )
 }
