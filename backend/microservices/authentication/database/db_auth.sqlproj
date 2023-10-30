@@ -2,9 +2,9 @@
 <Project DefaultTargets="Build">
   <Sdk Name="Microsoft.Build.Sql" Version="0.1.12-preview" />
   <PropertyGroup>
-    <Name>table_auth</Name>
-    <ProjectGuid>{076F93C9-FD75-46DE-9EFA-1DE70CE2FA32}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <Name>db_auth</Name>
+    <ProjectGuid>{C68C529D-AAB3-4E78-978E-9E8B0B33FC15}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
   </PropertyGroup>
   <Target Name="BeforeBuild">

@@ -1,7 +1,0 @@
-CREATE TABLE [dbo].[User] (
-    [Id]       UNIQUEIDENTIFIER CONSTRAINT [DEFAULT_User_Id] DEFAULT (newid()) NOT NULL PRIMARY KEY CLUSTERED ([Id] ASC),
-    [Username] NVARCHAR (255)   NOT NULL,
-    [Email]    NVARCHAR (255)   NOT NULL,
-    [Password] NVARCHAR (255)   NOT NULL,
-    [Salt]     NVARCHAR (255)   NOT NULL
-);

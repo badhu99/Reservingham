@@ -3,3 +3,4 @@ node_modules
 obj
 bin
 frontend/table-reservation/.env
+backend/microservices/authentication/internal/.env
