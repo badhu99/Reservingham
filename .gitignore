@@ -4,3 +4,5 @@ obj
 bin
 frontend/table-reservation/.env
 backend/microservices/authentication/internal/.env
+backend/microservices/management-service/internal/.env
+.azuredatastudio/settings.json
