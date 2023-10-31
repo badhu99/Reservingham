@@ -28,12 +28,15 @@ func (handlerData *HandlerData) SignIn(w http.ResponseWriter, r *http.Request) {
 		Model(userEntity).
 		Where(entity.User{Username: userLogin.Username}).
 		Find(&userEntity).
-		Joins("JOIN UserRole ON UserRole.UserId = [User].Id").
+		Joins("JOIN Permission ON Permission.UserId = [User].Id").
 		Preload("UserRole").
-		Scan(&userEntity.UserRoles).
-		Joins("JOIN Role ON UserRole.RoleId = [Role].Id").
+		Scan(&userEntity.Permissions).
+		Joins("JOIN Role ON Permission.RoleId = [Role].Id").
 		Preload("Role").
-		Scan(&userEntity.Roles)
+		Scan(&userEntity.Roles).
+		Joins("JOIN Company ON Permission.CompanyId = [Company].Id").
+		Preload("Company").
+		Scan(&userEntity.Company)
 
 	// Check if passwords match
 	password, _ := base64.StdEncoding.DecodeString(userEntity.PasswordHash)

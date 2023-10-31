@@ -37,14 +37,16 @@ func main() {
 
 	g.UseDB(db)
 
-	dbUserRole := g.GenerateModel("UserRole")
+	dbPermission := g.GenerateModel("Permission")
 	dbUser := g.GenerateModel("User")
 	dbRole := g.GenerateModel("Role")
+	dbCompany := g.GenerateModel("Company")
 
-	g.GenerateModel("UserRole",
+	g.GenerateModel("Permission",
 		gen.FieldType("Id", "mssql.UniqueIdentifier"),
 		gen.FieldType("UserId", "mssql.UniqueIdentifier"),
 		gen.FieldType("RoleId", "mssql.UniqueIdentifier"),
+		gen.FieldType("CompanyId", "mssql.UniqueIdentifier"),
 		gen.FieldRelate(field.HasOne, "User", dbUser, &field.RelateConfig{
 			GORMTag: field.GormTag{
 				"foreignKey": []string{"UserID"},
@@ -57,12 +59,17 @@ func main() {
 				"references": []string{"ID"},
 			},
 		}),
+		gen.FieldRelate(field.HasOne, "Company", dbCompany, &field.RelateConfig{
+			GORMTag: field.GormTag{
+				"foreignKey": []string{"CompanyID"},
+				"references": []string{"ID"},
+			},
+		}),
 	)
 
 	g.GenerateModel("User",
 		gen.FieldType("Id", "mssql.UniqueIdentifier"),
-		gen.FieldRelate(field.HasMany, "UserRoles", dbUserRole, &field.RelateConfig{
-			// GORMTag: userGormTag.Append("foreignKey", "FK_UserRole_User"),
+		gen.FieldRelate(field.HasMany, "Permissions", dbPermission, &field.RelateConfig{
 			GORMTag: field.GormTag{
 				"foreignKey": []string{"UserID"},
 			},
@@ -72,11 +79,25 @@ func main() {
 				"-": []string{"all"},
 			},
 		}),
+		gen.FieldRelate(field.HasOne, "Company", dbCompany, &field.RelateConfig{
+			GORMTag: field.GormTag{
+				"-": []string{"all"},
+			},
+		}),
 	)
 
 	g.GenerateModel("Role",
 		gen.FieldType("Id", "mssql.UniqueIdentifier"),
-		gen.FieldRelate(field.HasMany, "UserRoles", dbUserRole, &field.RelateConfig{
+		gen.FieldRelate(field.HasMany, "Permissions", dbPermission, &field.RelateConfig{
+			GORMTag: field.GormTag{
+				"foreignKey": []string{"RoleID"},
+			},
+		}),
+	)
+
+	g.GenerateModel("Company",
+		gen.FieldType("Id", "mssql.UniqueIdentifier"),
+		gen.FieldRelate(field.HasMany, "Permissions", dbPermission, &field.RelateConfig{
 			GORMTag: field.GormTag{
 				"foreignKey": []string{"RoleID"},
 			},

@@ -4,17 +4,30 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 
 	server "github.com/badhu99/authentication/internal"
 	"github.com/gorilla/handlers"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 
+	err := godotenv.Load("./internal/.env")
+	if err != nil {
+		log.Fatalln("Check .env file: ", err)
+	}
+
+	port, err := strconv.Atoi(os.Getenv("PORT"))
+	if err != nil {
+		log.Fatalln("Port could not be defined from .env file.", err)
+	}
+
 	server := &server.Server{
 		Config: server.Config{
-			Port: 8080,
+			Port: port,
 			Env:  server.Dev,
 		},
 		Database: server.DatabaseConnect(),

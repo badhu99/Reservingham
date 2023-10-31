@@ -32,6 +32,7 @@ const (
 )
 
 func (server *Server) AuthRoutes() *mux.Router {
+
 	router := mux.NewRouter()
 
 	h := handler.HandlerData{
