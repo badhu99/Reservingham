@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/badhu99/management-service/internal/handler"
+	"github.com/badhu99/management-service/internal/middleware"
+	"github.com/badhu99/management-service/internal/services"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlserver"
@@ -36,8 +38,28 @@ func (server *Server) Routes() *mux.Router {
 		Database: server.Database,
 	}
 
-	router.HandleFunc("/company", h.CreateCompany).Methods("POST")
+	router.Use(middleware.Log)
 
+	routerCompany := router.PathPrefix("/company").Subrouter()
+	routerCompany.Use(middleware.AuthSubRouter([]services.Role{services.Admin}))
+
+	routerUser := router.PathPrefix("/user").Subrouter()
+	routerUser.Use(middleware.AuthSubRouter([]services.Role{services.Manager}))
+
+	routerCompany.HandleFunc("", h.GetCompanys).Methods("GET")
+	routerCompany.HandleFunc("", h.CreateCompany).Methods("POST")
+	routerCompany.HandleFunc("/{companyId}", h.UpdateCompany).Methods("PATCH")
+	routerCompany.HandleFunc("/{companyId}", h.DeleteCompany).Methods("DELETE")
+
+	routerUser.HandleFunc("", h.GetUsers).Methods("GET")
+	routerUser.HandleFunc("/{userId}", h.GetUserById).Methods("GET")
+	routerUser.HandleFunc("", h.CreateUser).Methods("POST")
+	routerUser.HandleFunc("/{userId}", h.DeleteUser).Methods("DELETE")
+	routerUser.HandleFunc("/{userId}", h.UpdateUser).Methods("PATCH")
+
+	routerUser.HandleFunc("/{userId}/{roleId}", h.AddPermission).Methods("POST")
+	routerUser.HandleFunc("/{userId}/{roleId}", h.RemovePermission).Methods("DELETE")
+	// TODO
 	return router
 }
 

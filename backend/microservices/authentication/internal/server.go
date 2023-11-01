@@ -13,7 +13,6 @@ import (
 )
 
 type Server struct {
-	// database
 	Database *gorm.DB
 	Config   Config
 }
