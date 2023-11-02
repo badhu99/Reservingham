@@ -1,7 +1,0 @@
-CREATE TABLE [dbo].[UserRole] (
-    [Id]     UNIQUEIDENTIFIER CONSTRAINT [DEFAULT_UserRole_Id] DEFAULT (newid()) NOT NULL PRIMARY KEY CLUSTERED ([Id] ASC),
-    [UserId] UNIQUEIDENTIFIER NOT NULL,
-    [RoleId] UNIQUEIDENTIFIER NOT NULL,
-    CONSTRAINT [FK_UserRole_Role_1] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Role] ([Id]),
-    CONSTRAINT [FK_UserRole_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
-);

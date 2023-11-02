@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	server "github.com/badhu99/authentication/internal"
+	server "github.com/badhu99/management-service/internal"
 	"github.com/gorilla/handlers"
 	"github.com/joho/godotenv"
 )
@@ -39,7 +39,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf("0.0.0.0:%d", server.Config.Port),
-		Handler:      handlers.CORS(origins, header, methods)(server.AuthRoutes()),
+		Handler:      handlers.CORS(origins, header, methods)(server.Routes()),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,

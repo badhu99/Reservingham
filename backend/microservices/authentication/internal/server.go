@@ -13,7 +13,6 @@ import (
 )
 
 type Server struct {
-	// database
 	Database *gorm.DB
 	Config   Config
 }
@@ -32,6 +31,7 @@ const (
 )
 
 func (server *Server) AuthRoutes() *mux.Router {
+
 	router := mux.NewRouter()
 
 	h := handler.HandlerData{

@@ -2,8 +2,8 @@
 <Project DefaultTargets="Build">
   <Sdk Name="Microsoft.Build.Sql" Version="0.1.12-preview" />
   <PropertyGroup>
-    <Name>db_auth</Name>
-    <ProjectGuid>{C68C529D-AAB3-4E78-978E-9E8B0B33FC15}</ProjectGuid>
+    <Name>db-management</Name>
+    <ProjectGuid>{581A27D3-AE0A-4D66-83FB-D8C5A53F8C07}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
   </PropertyGroup>

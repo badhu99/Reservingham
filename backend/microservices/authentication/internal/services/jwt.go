@@ -13,9 +13,10 @@ import (
 
 type JwtData struct {
 	jwt.StandardClaims
-	Id       string
-	Username string
-	Roles    []string
+	Id        string
+	Username  string
+	Roles     []string
+	CompanyId string `json:"CompanyId,omitempty"`
 }
 
 func GenerateJwt(user entity.User) (string, error) {
@@ -31,15 +32,17 @@ func GenerateJwt(user entity.User) (string, error) {
 		StandardClaims: jwt.StandardClaims{Audience: "Audience", ExpiresAt: time.Now().Add(12 * time.Hour).Unix(), IssuedAt: time.Now().Unix(), Issuer: "Issuer", Subject: "Subject"},
 		Id:             user.ID.String(),
 		Username:       user.Username,
-		// Role:           user.Roles,
 	}
 
 	var rolesString []string
 	for _, role := range user.Roles {
 		rolesString = append(rolesString, role.Name)
 	}
-
 	claims.Roles = rolesString
+
+	if user.Company.ID != [16]byte{} {
+		claims.CompanyId = user.Company.ID.String()
+	}
 
 	tokenString := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return tokenString.SignedString([]byte(jwtKey))

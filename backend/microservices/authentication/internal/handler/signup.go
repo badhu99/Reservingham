@@ -74,7 +74,7 @@ func (handlerData *HandlerData) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Create UserRole entity and populate data
-	userRoleEntity := entity.UserRole{
+	userRoleEntity := entity.Permission{
 		UserID: userEntity.ID,
 		RoleID: roleEntity.ID,
 	}
