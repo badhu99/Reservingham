@@ -22,6 +22,7 @@ func (base *HandlerData) CreateCompany(w http.ResponseWriter, r *http.Request) {
 	e, statusCode := utility.ValidateBody(&companyData, r.Body)
 	if e != nil {
 		http.Error(w, e.Error(), statusCode)
+		return
 	}
 
 	entityCompany := entity.Company{

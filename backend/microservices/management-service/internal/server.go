@@ -59,7 +59,6 @@ func (server *Server) Routes() *mux.Router {
 
 	routerUser.HandleFunc("/{userId}/{roleId}", h.AddPermission).Methods("POST")
 	routerUser.HandleFunc("/{userId}/{roleId}", h.RemovePermission).Methods("DELETE")
-	// TODO
 	return router
 }
 
