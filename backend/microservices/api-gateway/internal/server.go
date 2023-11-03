@@ -6,6 +6,7 @@ import (
 
 	"github.com/badhu99/api-gateway/internal/handler"
 	"github.com/badhu99/api-gateway/internal/middleware"
+	"github.com/badhu99/api-gateway/internal/routes"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
@@ -46,8 +47,9 @@ func (server *Server) AuthRoutes() *mux.Router {
 	router = router.PathPrefix("/api").Subrouter()
 	router.Use(middleware.Log)
 
-	routerCompany := router.PathPrefix("/auth").Subrouter()
-	routerCompany.HandleFunc("", h.SignIn).Methods("POST")
+	routes.AuthRoutes(router, h)
+	routes.UserRoutes(router, h)
+	routes.CompanyRoutes(router, h)
 
 	return router
 }

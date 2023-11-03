@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 
@@ -73,7 +72,6 @@ func ValidateBody[T any](u *T, body io.ReadCloser) (error, int) {
 		// Otherwise default to logging the error and sending a 500 Internal
 		// Server Error response.
 		default:
-			log.Print(err.Error())
 			return errors.New(http.StatusText(http.StatusInternalServerError)), http.StatusInternalServerError
 		}
 	}
