@@ -30,7 +30,7 @@ func main() {
 			Port: port,
 			Env:  server.Dev,
 		},
-		Database: server.DatabaseConnect(),
+		Database: server.Database(),
 	}
 
 	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
