@@ -5,9 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strings"
+
+	"github.com/go-playground/validator"
 )
 
 func ValidateBody[T any](u *T, body io.ReadCloser) (error, int) {
@@ -71,9 +72,15 @@ func ValidateBody[T any](u *T, body io.ReadCloser) (error, int) {
 		// Otherwise default to logging the error and sending a 500 Internal
 		// Server Error response.
 		default:
-			log.Print(err.Error())
 			return errors.New(http.StatusText(http.StatusInternalServerError)), http.StatusInternalServerError
 		}
 	}
+
+	validate := validator.New()
+	err = validate.Struct(u)
+	if err != nil {
+		return err, http.StatusBadRequest
+	}
+
 	return nil, 0
 }
