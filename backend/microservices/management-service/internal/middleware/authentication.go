@@ -38,7 +38,7 @@ func AuthSubRouter(roles []services.Role) func(http.Handler) http.Handler {
 			reqToken := r.Header.Get("Authorization")
 			splitToken := strings.Split(reqToken, "Bearer")
 			if len(splitToken) != 2 {
-				http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
+				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 				return
 			}
 			token := strings.TrimSpace(splitToken[1])

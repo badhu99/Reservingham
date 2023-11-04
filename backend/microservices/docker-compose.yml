@@ -1,0 +1,44 @@
+version: '1'
+
+networks:
+  network_microservice:
+    name: test-network
+    driver: bridge
+    external: true
+
+services:
+  service-api-gateway:
+    container_name: ${CONTAINER_API_GATEWAY_NAME}
+    image: service-api-gateway
+    environment:
+      - PORT=${PORT_API_GATEWAY}
+      - URL_AUTH=http://${CONTAINER_AUTHENTICATION_NAME}:${PORT_AUTH}
+      - URL_MANAGEMENT=http://${CONTAINER_MANAGEMENT_NAME}:${PORT_MANAGEMENT}
+    ports:
+      - "${PORT_API_GATEWAY}:${PORT_API_GATEWAY}"
+    networks:
+      - network_microservice
+  
+  service-authentication:
+      image: image-service-authentication
+      container_name: ${CONTAINER_AUTHENTICATION_NAME}
+      environment:
+        - PORT=${PORT_AUTH}
+        - SQL_DATABASE_URL=${DB_URL}
+        - JWT_SECRET=${SECRET}
+      ports:
+        - "${PORT_AUTH}:${PORT_AUTH}"
+      networks:
+        - network_microservice
+
+  service-management:
+      image: image-service-management
+      container_name: ${CONTAINER_MANAGEMENT_NAME}
+      environment:
+        - PORT=${PORT_MANAGEMENT}
+        - SQL_DATABASE_URL=${DB_URL}
+        - JWT_SECRET=${SECRET}
+      ports:
+        - "${PORT_MANAGEMENT}:${PORT_MANAGEMENT}"
+      networks:
+        - network_microservice

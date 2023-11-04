@@ -2,11 +2,12 @@ import axios, { AxiosError } from "axios";
 import { LoginResponseModel, LoginRequestModel } from "../classes/login_model";
 
 
-const endpoint = "/signin"
+const endpoint = "auth"
 
 export async function loginUser(data: LoginRequestModel): Promise<LoginResponseModel | AxiosError>{
 
-    const url = process.env.REACT_APP_BASE_URL + endpoint;
+    const action = "signin"
+    const url = `${process.env.REACT_APP_BASE_URL}/api/${endpoint}/${action}`
 
     const headers = {
         "Content-Type": "application/json",

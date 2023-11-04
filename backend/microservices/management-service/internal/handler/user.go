@@ -44,7 +44,7 @@ func (data *HandlerData) GetUsers(w http.ResponseWriter, r *http.Request) {
 		Joins("JOIN Permission p ON [User].Id = p.UserId").
 		Preload("Permissions").
 		Not("p.CompanyId IS NULL").
-		Where("p.CompanyId = ?", "78f5d90c-585e-411b-85e9-8dda51878bab").
+		Where("p.CompanyId = ?", companyId).
 		Joins("JOIN Role r ON r.id = p.RoleId").
 		Preload("Permissions.Role").
 		Count(&count).
