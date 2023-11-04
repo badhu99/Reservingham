@@ -8,11 +8,31 @@ import (
 	"strconv"
 	"time"
 
+	_ "github.com/badhu99/api-gateway/docs"
 	server "github.com/badhu99/api-gateway/internal"
 	"github.com/gorilla/handlers"
 	"github.com/joho/godotenv"
 )
 
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample Reservingham server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8081
+// @BasePath
+
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @description Type 'Bearer TOKEN' to correctly set the API Key
 func main() {
 
 	err := godotenv.Load("./internal/.env")

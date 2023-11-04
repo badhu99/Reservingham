@@ -185,7 +185,18 @@ func (data *HandlerData) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	data.Database.Create(&entityPermission)
 
-	w.WriteHeader(http.StatusAccepted)
+	responseUser := dto.User{
+		ID: entityUser.ID,
+		UserData: dto.UserData{
+			Email:    entityUser.Email,
+			Username: entityUser.Username,
+		},
+	}
+
+	response, _ := json.Marshal(responseUser)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	w.Write(response)
 }
 
 func (data *HandlerData) DeleteUser(w http.ResponseWriter, r *http.Request) {
