@@ -35,8 +35,9 @@ func (server *Server) Routes() *mux.Router {
 
 	router.Use(middleware.Log)
 
-	routes.Company(router, &h)
-	routes.User(router, &h)
+	routes.Company(router, h)
+	routes.User(router, h)
+	routes.Role(router, h)
 
 	return router
 }

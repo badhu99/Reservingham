@@ -7,11 +7,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func Company(router *mux.Router, handler *handler.HandlerData) {
+func Company(router *mux.Router, handler handler.HandlerData) {
 	routerCompany := router.PathPrefix("/company").Subrouter()
 	routerCompany.Use(middleware.AuthSubRouter([]services.Role{services.Admin}))
 
-	routerCompany.HandleFunc("", handler.GetCompanys).Methods("GET")
+	routerCompany.HandleFunc("", handler.GetCompanies).Methods("GET")
 	routerCompany.HandleFunc("/{companyId}", handler.GetCompanyById).Methods("GET")
 	routerCompany.HandleFunc("", handler.CreateCompany).Methods("POST")
 	routerCompany.HandleFunc("/{companyId}", handler.UpdateCompany).Methods("PATCH")

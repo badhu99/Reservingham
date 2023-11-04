@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func User(router *mux.Router, handler *handler.HandlerData) {
+func User(router *mux.Router, handler handler.HandlerData) {
 	routerUser := router.PathPrefix("/user").Subrouter()
 	routerUser.Use(middleware.AuthSubRouter([]services.Role{services.Manager}))
 

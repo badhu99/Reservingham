@@ -70,7 +70,7 @@ func (data *HandlerData) DeleteCompany(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusAccepted)
 }
 
-func (data *HandlerData) GetCompanys(w http.ResponseWriter, r *http.Request) {
+func (data *HandlerData) GetCompanies(w http.ResponseWriter, r *http.Request) {
 	pageNumber, err := strconv.Atoi(r.URL.Query().Get("pageNumber"))
 	if err != nil {
 		pageNumber = 1
