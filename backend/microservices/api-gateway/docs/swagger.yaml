@@ -1,0 +1,578 @@
+definitions:
+  dto.Company:
+    properties:
+      Id:
+        type: string
+      Name:
+        type: string
+    required:
+    - Name
+    type: object
+  dto.CompanyData:
+    properties:
+      Name:
+        type: string
+    required:
+    - Name
+    type: object
+  dto.Login:
+    properties:
+      Password:
+        type: string
+      Username:
+        type: string
+    type: object
+  dto.PaginationCompany:
+    properties:
+      Count:
+        type: integer
+      Items:
+        items:
+          $ref: '#/definitions/dto.Company'
+        type: array
+      PageNumber:
+        type: integer
+      PageSize:
+        type: integer
+    type: object
+  dto.PaginationRole:
+    properties:
+      Count:
+        type: integer
+      Items:
+        items:
+          $ref: '#/definitions/dto.RoleResponse'
+        type: array
+      PageNumber:
+        type: integer
+      PageSize:
+        type: integer
+    type: object
+  dto.PaginationUsers:
+    properties:
+      Count:
+        type: integer
+      Items:
+        items:
+          $ref: '#/definitions/dto.User'
+        type: array
+      PageNumber:
+        type: integer
+      PageSize:
+        type: integer
+    type: object
+  dto.RoleResponse:
+    properties:
+      Id:
+        type: string
+      Name:
+        type: string
+    type: object
+  dto.User:
+    properties:
+      Email:
+        type: string
+      Id:
+        type: string
+      Password:
+        type: string
+      Username:
+        type: string
+    type: object
+  dto.UserData:
+    properties:
+      Email:
+        type: string
+      Password:
+        type: string
+      Username:
+        type: string
+    type: object
+  dto.UserDataResponse:
+    properties:
+      Email:
+        type: string
+      Id:
+        type: string
+      Password:
+        type: string
+      Username:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/dto.RoleResponse'
+        type: array
+    type: object
+  dto.UserResponse:
+    properties:
+      AccessToken:
+        type: string
+      Email:
+        type: string
+      Password:
+        type: string
+      RefreshToken:
+        type: string
+      Username:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample Reservingham server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /api/auth/signin:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Body
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      summary: User authentication
+      tags:
+      - Auth
+  /api/company:
+    get:
+      parameters:
+      - description: Page number
+        in: query
+        name: pageNumber
+        type: string
+      - description: Page size
+        in: query
+        name: pageSize
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaginationCompany'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get companies paginated.
+      tags:
+      - Company
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Body
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CompanyData'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.Company'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create company.
+      tags:
+      - Company
+  /api/company/{companyId}:
+    delete:
+      parameters:
+      - description: Company ID
+        in: path
+        name: companyId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete company.
+      tags:
+      - Company
+    get:
+      parameters:
+      - description: Company ID
+        in: path
+        name: companyId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Company'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get company by id.
+      tags:
+      - Company
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Company ID
+        in: path
+        name: companyId
+        required: true
+        type: string
+      - description: Body
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CompanyData'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update company data.
+      tags:
+      - Company
+  /api/permission/{userId}/{roleId}:
+    delete:
+      parameters:
+      - description: UserId ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: Role ID
+        in: path
+        name: roleId
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete user permission.
+      tags:
+      - Permission
+    post:
+      parameters:
+      - description: UserId ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: Role ID
+        in: path
+        name: roleId
+        required: true
+        type: string
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Add user permission.
+      tags:
+      - Permission
+  /api/role:
+    get:
+      parameters:
+      - description: Page number
+        in: query
+        name: pageNumber
+        type: string
+      - description: Page size
+        in: query
+        name: pageSize
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaginationRole'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get roles paginated.
+      tags:
+      - Role
+  /api/user:
+    get:
+      parameters:
+      - description: Page number
+        in: query
+        name: pageNumber
+        type: string
+      - description: Page size
+        in: query
+        name: pageSize
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaginationUsers'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get users paginated.
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Body
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserData'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.User'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create user.
+      tags:
+      - User
+  /api/user/{userId}:
+    delete:
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete user.
+      tags:
+      - User
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserDataResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get user by id.
+      tags:
+      - User
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: Body
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserData'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update user data.
+      tags:
+      - User
+securityDefinitions:
+  Bearer:
+    description: Type 'Bearer TOKEN' to correctly set the API Key
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

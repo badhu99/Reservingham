@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/badhu99/management-service/internal/services"
+	"github.com/badhu99/api-gateway/internal/services"
 )
 
 func AuthHandler(roles []services.Role, next http.HandlerFunc) http.HandlerFunc {
@@ -38,7 +38,7 @@ func AuthSubRouter(roles []services.Role) func(http.Handler) http.Handler {
 			reqToken := r.Header.Get("Authorization")
 			splitToken := strings.Split(reqToken, "Bearer")
 			if len(splitToken) != 2 {
-				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+				http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
 				return
 			}
 			token := strings.TrimSpace(splitToken[1])

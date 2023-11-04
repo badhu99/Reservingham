@@ -19,6 +19,7 @@ func (handlerData *HandlerData) SignIn(w http.ResponseWriter, r *http.Request) {
 	e, statusCode := utility.ValidateBody(&userLogin, r.Body)
 	if e != nil {
 		http.Error(w, e.Error(), statusCode)
+		return
 	}
 
 	// find user entity
@@ -44,7 +45,7 @@ func (handlerData *HandlerData) SignIn(w http.ResponseWriter, r *http.Request) {
 
 	passwordMatch := services.ValidatePassword(password, []byte(userLogin.Password), salt)
 	if !passwordMatch {
-		http.Error(w, "Username or password is incorect", http.StatusForbidden)
+		http.Error(w, "Username or password is incorect", http.StatusUnauthorized)
 		return
 	}
 
