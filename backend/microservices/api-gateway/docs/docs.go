@@ -418,6 +418,56 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/role": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Role"
+                ],
+                "summary": "Get roles paginated.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Page number",
+                        "name": "pageNumber",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PaginationRole"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/user": {
             "get": {
                 "security": [
@@ -719,6 +769,26 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.Company"
+                    }
+                },
+                "PageNumber": {
+                    "type": "integer"
+                },
+                "PageSize": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.PaginationRole": {
+            "type": "object",
+            "properties": {
+                "Count": {
+                    "type": "integer"
+                },
+                "Items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.RoleResponse"
                     }
                 },
                 "PageNumber": {

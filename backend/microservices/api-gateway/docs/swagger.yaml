@@ -35,6 +35,19 @@ definitions:
       PageSize:
         type: integer
     type: object
+  dto.PaginationRole:
+    properties:
+      Count:
+        type: integer
+      Items:
+        items:
+          $ref: '#/definitions/dto.RoleResponse'
+        type: array
+      PageNumber:
+        type: integer
+      PageSize:
+        type: integer
+    type: object
   dto.PaginationUsers:
     properties:
       Count:
@@ -366,6 +379,37 @@ paths:
       summary: Add user permission.
       tags:
       - Permission
+  /api/role:
+    get:
+      parameters:
+      - description: Page number
+        in: query
+        name: pageNumber
+        type: string
+      - description: Page size
+        in: query
+        name: pageSize
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaginationRole'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get roles paginated.
+      tags:
+      - Role
   /api/user:
     get:
       parameters:

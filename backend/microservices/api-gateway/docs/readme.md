@@ -9,5 +9,8 @@
  ### Update swagger
  - command swag init
 
+ #### ERRORS
+  - zsh: command not found -> PATH=$(go env GOPATH)/bin:$PATH
+
  ### URL
  - http://localhost:8081/api/swagger/index.html#/

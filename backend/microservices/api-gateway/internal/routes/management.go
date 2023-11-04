@@ -28,3 +28,8 @@ func PermissionRoutes(router *mux.Router, handlerData handler.HandlerData) {
 	routerPermissions.HandleFunc("/{userId}/{roleId}", handlerData.AddPermission).Methods("POST")
 	routerPermissions.HandleFunc("/{userId}/{roleId}", handlerData.DeletePermission).Methods("DELETE")
 }
+
+func RoleRoutes(router *mux.Router, handlerData handler.HandlerData) {
+	routerPermissions := router.PathPrefix("/role").Subrouter()
+	routerPermissions.HandleFunc("", handlerData.GetRoles).Methods("GET")
+}
