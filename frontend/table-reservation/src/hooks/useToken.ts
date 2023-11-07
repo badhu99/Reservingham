@@ -10,6 +10,8 @@ export default function useToken() {
     sessionStorage.setItem(constToken, userToken);
     const userData = getTokenData();
     setTokenData(prevUserData => ({...prevUserData, ...userData}))
+    setTokenString(userToken)
+
     
   };
 
@@ -35,11 +37,20 @@ export default function useToken() {
     return tokenData;
   };
 
+  const getTokenString = ():string => {
+    const token = sessionStorage.getItem(constToken);
+    if (token === null) return "";
+    return token;
+  }
+
   const [tokenData, setTokenData] = useState(getTokenData());
+  const [tokenString, setTokenString] = useState(getTokenString())
 
   return {
     setToken: saveToken,
     clearToken,
     tokenData,
+    tokenString,
+    getTokenString
   };
 }

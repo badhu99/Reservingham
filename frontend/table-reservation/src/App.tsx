@@ -16,6 +16,8 @@ import AuthGuard from "./utils/helpers/guards/auth-guard";
 import { Roles } from "./utils/enums/roles";
 import Reservations from "./pages/reservations/reservations";
 import UnAuthGuard from "./utils/helpers/guards/un-auth-guard";
+import Manager from "./pages/manager/manager";
+import Admin from "./pages/admin/admin";
 
 const AuthRoutes = [
   <Route
@@ -46,10 +48,16 @@ const AuthRoutes = [
         <AuthGuard allowedRoles={[Roles.Editor]} element={<Editor />} />
       }
     />
+        <Route
+      path="/manager"
+      element={
+        <AuthGuard allowedRoles={[Roles.Manager]} element={<Manager />} />
+      }
+    />
     <Route
       path="/admin"
       element={
-        <AuthGuard allowedRoles={[Roles.Admin]} element={<Editor />} />
+        <AuthGuard allowedRoles={[Roles.Admin]} element={<Admin />} />
       }
     />
   </Route>,

@@ -25,14 +25,19 @@ export default function BackboneContent() {
                 <Link to="/dashboard">Dashboard</Link>
               </li>
             )}
+            {AllowedAccessBool([Roles.User], tokenData) && (
+              <li>
+                <Link to="/reservations">Reservations</Link>
+              </li>
+            )}
             {AllowedAccessBool([Roles.Editor], tokenData) && (
               <li>
                 <Link to="/editor">Editor</Link>
               </li>
             )}
-            {AllowedAccessBool([Roles.User], tokenData) && (
+            {AllowedAccessBool([Roles.Manager], tokenData) && (
               <li>
-                <Link to="/reservations">Reservations</Link>
+                <Link to="/manager">Manager</Link>
               </li>
             )}
             {AllowedAccessBool([Roles.Admin], tokenData) && (
