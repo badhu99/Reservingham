@@ -1,11 +1,14 @@
-import "./backbone-content.scss";
-
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import useToken from "../../hooks/useToken";
 import { Roles } from "../../utils/enums/roles";
 import { AllowedAccessBool } from "../../utils/helpers/guards/check-access";
+import { ReactComponent as SwitchIcon} from './../../assets/switch-icon.svg'
+import { ReactComponent as LogoutIcon} from './../../assets/logout-icon.svg'
+import { useState } from "react";
+import { Modal } from "./modal";
 
-export default function BackboneContent() {
+export default function Navbar() {
+  const [openModal, setOpenModal] = useState(false);
   let navigate = useNavigate();
 
   const { clearToken, tokenData } = useToken();
@@ -15,8 +18,15 @@ export default function BackboneContent() {
     navigate("./../auth");
   };
 
+  const toggleOpenModal = () => {
+    setOpenModal(prev => !prev)
+  }
+
   return (
     <div className="container">
+      <Modal handleClose={ toggleOpenModal } show={openModal}>
+        <p>Here comes popup</p>
+      </Modal>
       <nav>
         <div className="left-side">
           <ul className="menuItems">
@@ -37,7 +47,7 @@ export default function BackboneContent() {
             )}
             {AllowedAccessBool([Roles.Manager], tokenData) && (
               <li>
-                <Link to="/manager">Manager</Link>
+                <Link to="/users">Users</Link>
               </li>
             )}
             {AllowedAccessBool([Roles.Admin], tokenData) && (
@@ -48,8 +58,9 @@ export default function BackboneContent() {
           </ul>
         </div>
         <div className="right-side">
+          <SwitchIcon onClick={toggleOpenModal}/>
           <text>{tokenData.Username}</text>
-          <a onClick={deleteToken}>Logout</a>
+          <LogoutIcon onClick={deleteToken}/>
         </div>
       </nav>
       <div className="main-content">
