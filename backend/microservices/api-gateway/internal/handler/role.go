@@ -16,7 +16,7 @@ import (
 // @Router		/api/role [get]
 // @Security 	Bearer
 func (data *HandlerData) GetRoles(w http.ResponseWriter, r *http.Request) {
-	requestUrl := fmt.Sprintf("%s/company", data.UrlManagement)
+	requestUrl := fmt.Sprintf("%s/role", data.UrlManagement)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodGet, r.Body)
 	functionHandler(w, r)
 }

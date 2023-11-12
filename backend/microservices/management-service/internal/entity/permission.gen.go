@@ -14,9 +14,9 @@ type Permission struct {
 	UserID    mssql.UniqueIdentifier `gorm:"column:UserId;not null" json:"UserId"`
 	RoleID    mssql.UniqueIdentifier `gorm:"column:RoleId;not null" json:"RoleId"`
 	CompanyID mssql.UniqueIdentifier `gorm:"column:CompanyId" json:"CompanyId"`
-	User      User                   `gorm:"foreignKey:UserID;references:ID" json:"User"`
-	Role      Role                   `gorm:"foreignKey:RoleID;references:ID" json:"Role"`
-	Company   Company                `gorm:"foreignKey:CompanyID;references:ID" json:"Company"`
+	User      User                   `gorm:"foreignKey:UserID;references:ID" json:"user"`
+	Role      Role                   `gorm:"foreignKey:RoleID;references:ID" json:"role"`
+	Company   Company                `gorm:"foreignKey:CompanyID;references:ID" json:"company"`
 }
 
 // TableName Permission's table name

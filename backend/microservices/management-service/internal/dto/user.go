@@ -8,9 +8,11 @@ type User struct {
 }
 
 type UserData struct {
-	Email    string `json:"Email"`
-	Username string `json:"Username"`
-	Password string `json:"Password,omitempty"`
+	Email     string `json:"Email"`
+	Username  string `json:"Username"`
+	Password  string `json:"Password,omitempty"`
+	Firstname string `json:"Firstname"`
+	Lastname  string `json:"Lastname"`
 }
 
 type UserResponse struct {

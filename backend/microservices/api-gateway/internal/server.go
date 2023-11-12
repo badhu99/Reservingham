@@ -67,6 +67,7 @@ func (s *Server) AuthRoutes() *mux.Router {
 	routes.UserRoutes(router, h)
 	routes.CompanyRoutes(router, h)
 	routes.PermissionRoutes(router, h)
+	routes.RoleRoutes(router, h)
 
 	return router
 }

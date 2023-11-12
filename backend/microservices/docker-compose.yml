@@ -9,7 +9,7 @@ networks:
 services:
   service-api-gateway:
     container_name: ${CONTAINER_API_GATEWAY_NAME}
-    image: service-api-gateway
+    image: image-service-api-gateway
     environment:
       - PORT=${PORT_API_GATEWAY}
       - URL_AUTH=http://${CONTAINER_AUTHENTICATION_NAME}:${PORT_AUTH}

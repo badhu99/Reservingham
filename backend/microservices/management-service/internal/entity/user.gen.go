@@ -16,6 +16,8 @@ type User struct {
 	PasswordHash string                 `gorm:"column:PasswordHash;not null" json:"PasswordHash"`
 	Salt         string                 `gorm:"column:Salt;not null" json:"Salt"`
 	RefreshToken string                 `gorm:"column:RefreshToken" json:"RefreshToken"`
+	Firstname    string                 `gorm:"column:Firstname" json:"Firstname"`
+	Lastname     string                 `gorm:"column:Lastname" json:"Lastname"`
 	Permissions  []Permission           `gorm:"foreignKey:UserID" json:"permissions"`
 	Roles        []Role                 `gorm:"-:all" json:"roles"`
 	Company      Company                `gorm:"-:all" json:"company"`

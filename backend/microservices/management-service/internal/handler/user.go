@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -33,23 +34,35 @@ func (data *HandlerData) GetUsers(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		pageSize = 12
 	}
+
+	searchParam := r.URL.Query().Get("search")
 	var count int64
 
 	entityUsers := []entity.User{}
 
-	data.Database.Model([]entity.User{}).
-		Distinct("[User].Id").
-		Count(&count).
-		Select("[User].*").
-		Joins("JOIN Permission p ON [User].Id = p.UserId").
+	query := data.Database.Table("[User] as u").Model([]entity.User{}).
+		Distinct("u.Id").
+		Select("u.*")
+
+	if searchParam != "" {
+		query = query.Where("u.Username Like ?", fmt.Sprintf("%%%s%%", searchParam)).
+			Or("u.Email Like ?", fmt.Sprintf("%%%s%%", searchParam))
+	}
+
+	query.
+		Joins("JOIN Permission p ON u.Id = p.UserId").
 		Preload("Permissions").
 		Not("p.CompanyId IS NULL").
 		Where("p.CompanyId = ?", companyId).
 		Joins("JOIN Role r ON r.id = p.RoleId").
 		Preload("Permissions.Role").
-		Count(&count).
 		Offset((pageNumber - 1) * pageSize).Limit(pageSize).
 		Find(&entityUsers)
+
+	data.Database.Table("Permission as p").
+		Distinct("p.UserId").
+		Where("p.CompanyId = ?", companyId).
+		Count(&count)
 
 	responseUser := []dto.UserResponse{}
 	for _, perm := range entityUsers {
@@ -66,8 +79,10 @@ func (data *HandlerData) GetUsers(w http.ResponseWriter, r *http.Request) {
 			User: dto.User{
 				ID: perm.ID,
 				UserData: dto.UserData{
-					Email:    perm.Email,
-					Username: perm.Username,
+					Email:     perm.Email,
+					Username:  perm.Username,
+					Firstname: perm.Firstname,
+					Lastname:  perm.Lastname,
 				},
 			},
 			Roles: roles,
@@ -126,7 +141,15 @@ func (data *HandlerData) GetUserById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseUser := dto.UserResponse{
-		User:  dto.User{ID: entityUser.ID, UserData: dto.UserData{Email: entityUser.Email, Username: entityUser.Username}},
+		User: dto.User{
+			ID: entityUser.ID,
+			UserData: dto.UserData{
+				Email:     entityUser.Email,
+				Username:  entityUser.Username,
+				Firstname: entityUser.Firstname,
+				Lastname:  entityUser.Lastname,
+			},
+		},
 		Roles: responseRoles,
 	}
 
@@ -169,6 +192,8 @@ func (data *HandlerData) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if errorGorm == gorm.ErrRecordNotFound {
 		entityUser.Username = dataUser.Username
 		entityUser.Email = dataUser.Email
+		entityUser.Firstname = dataUser.Firstname
+		entityUser.Lastname = dataUser.Lastname
 
 		salt, _ := services.GenerateRandomSalt(16)
 		password, _ := services.HashPassword([]byte(dataUser.Password), salt)
@@ -188,8 +213,10 @@ func (data *HandlerData) CreateUser(w http.ResponseWriter, r *http.Request) {
 	responseUser := dto.User{
 		ID: entityUser.ID,
 		UserData: dto.UserData{
-			Email:    entityUser.Email,
-			Username: entityUser.Username,
+			Email:     entityUser.Email,
+			Username:  entityUser.Username,
+			Firstname: entityUser.Firstname,
+			Lastname:  entityUser.Lastname,
 		},
 	}
 
