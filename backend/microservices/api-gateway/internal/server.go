@@ -44,14 +44,18 @@ func (s *Server) AuthRoutes() *mux.Router {
 	}
 
 	h := handler.HandlerData{
-		UrlAuth:       os.Getenv("URL_AUTH"),
-		UrlManagement: os.Getenv("URL_MANAGEMENT"),
+		UrlAuth:              os.Getenv("URL_AUTH"),
+		UrlManagement:        os.Getenv("URL_MANAGEMENT"),
+		UrlContentManagement: os.Getenv("URL_CONTENT_MANAGEMENT"),
 	}
+
+	log.Println(h.UrlContentManagement)
+	log.Println(h.UrlManagement)
 
 	router := mux.NewRouter()
 	router = router.PathPrefix("/api").Subrouter()
 
-	port, err := strconv.Atoi(os.Getenv("PORT"))
+	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	url := fmt.Sprintf("0.0.0.0:%d/swagger/doc.json", port)
 
 	router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
@@ -69,18 +73,7 @@ func (s *Server) AuthRoutes() *mux.Router {
 	routes.PermissionRoutes(router, h)
 	routes.RoleRoutes(router, h)
 
+	routes.DraftRoutes(router, h)
+
 	return router
 }
-
-// func (s *Server) AuthRoutes() *mux.Router {
-// 	r := mux.NewRouter()
-
-// 	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-// 		httpSwagger.URL("http://localhost:8081/swagger/doc.json"), //The url pointing to API definition
-// 		httpSwagger.DeepLinking(true),
-// 		httpSwagger.DocExpansion("none"),
-// 		httpSwagger.DomID("swagger-ui"),
-// 	)).Methods(http.MethodGet)
-
-// 	return r
-// }
