@@ -14,6 +14,7 @@ services:
       - PORT=${PORT_API_GATEWAY}
       - URL_AUTH=http://${CONTAINER_AUTHENTICATION_NAME}:${PORT_AUTH}
       - URL_MANAGEMENT=http://${CONTAINER_MANAGEMENT_NAME}:${PORT_MANAGEMENT}
+      - URL_CONTENT_MANAGEMENT=http://${CONTAINER_CONTENT_MANAGEMENT_NAME}:${PORT_CONTENT_MANAGEMENT}
     ports:
       - "${PORT_API_GATEWAY}:${PORT_API_GATEWAY}"
     networks:
@@ -40,5 +41,17 @@ services:
         - JWT_SECRET=${SECRET}
       ports:
         - "${PORT_MANAGEMENT}:${PORT_MANAGEMENT}"
+      networks:
+        - network_microservice
+
+  service-content-management:
+      image: image-content-management-service
+      container_name: ${CONTAINER_CONTENT_MANAGEMENT_NAME}
+      environment:
+        - PORT=${PORT_CONTENT_MANAGEMENT}
+        - SQL_DATABASE_URL=${DB_URL_CONTENT_MANAGEMENTE}
+        - JWT_SECRET=${SECRET}
+      ports:
+        - "${PORT_CONTENT_MANAGEMENT}:${PORT_CONTENT_MANAGEMENT}"
       networks:
         - network_microservice
