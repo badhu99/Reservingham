@@ -9,8 +9,9 @@ import (
 )
 
 type HandlerData struct {
-	UrlAuth       string
-	UrlManagement string
+	UrlAuth              string
+	UrlManagement        string
+	UrlContentManagement string
 }
 
 func (data *HandlerData) HttpRequestBroker(requestUrl, method string, body io.ReadCloser) func(w http.ResponseWriter, r *http.Request) {

@@ -29,7 +29,7 @@ func GenerateJwt(user entity.User) (string, error) {
 	jwtKey := os.Getenv("JWT_SECRET")
 
 	claims := JwtData{
-		StandardClaims: jwt.StandardClaims{Audience: "Audience", ExpiresAt: time.Now().Add(12 * time.Hour).Unix(), IssuedAt: time.Now().Unix(), Issuer: "Issuer", Subject: "Subject"},
+		StandardClaims: jwt.StandardClaims{Audience: "company-service;user-service;api-gateway-service;file-service", ExpiresAt: time.Now().Add(12 * time.Hour).Unix(), IssuedAt: time.Now().Unix(), Issuer: "Issuer", Subject: "Subject"},
 		Id:             user.ID.String(),
 		Username:       user.Username,
 	}

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -19,6 +20,7 @@ import (
 // @Security 	Bearer
 func (data *HandlerData) GetCompanies(w http.ResponseWriter, r *http.Request) {
 	requestUrl := fmt.Sprintf("%s/company", data.UrlManagement)
+	log.Println(requestUrl)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodGet, r.Body)
 	functionHandler(w, r)
 }
