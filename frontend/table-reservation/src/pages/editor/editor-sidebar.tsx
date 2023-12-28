@@ -1,32 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CanvasElement } from "../../interfaces/shapes";
-import EditorDetailsInformation from "./editor-details-information";
+import EditorDetailsInformation from "./editor-details-information-settings";
+import EditorOverviewInformation from "./editor-overview-information";
+import EditorDetailsReservationsSettings from "./editor-details-reservations";
 
 interface IEditorSidebarProps {
-    Elements: CanvasElement[]
+        Elements: CanvasElement[];
+        UpdateElements: (updatedElements: CanvasElement[]) => void;
+        ElementSelected: CanvasElement | undefined;
+        UpdateElement: (updatedElement: CanvasElement) => void;
 }
 
-const EditorSidebar: React.FC<IEditorSidebarProps> = ({Elements}) => {
-  const [activeTab, setActiveTab] = useState(1);
+const EditorSidebar: React.FC<IEditorSidebarProps> = ({Elements, UpdateElements, ElementSelected, UpdateElement}) => {
+    const [activeTab, setActiveTab] = useState(1);
 
-  const handleTabClick = (tabNumber: number) => {
-    setActiveTab(tabNumber);
-  };
+    const handleTabClick = (tabNumber: number) => {
+        setActiveTab(tabNumber);
+    };
 
-  return (
-    <>
-      <div className="div-editor-content">
-        {activeTab === 1 && <EditorDetailsInformation canvasElements={Elements} />}
-        {activeTab === 2 && <h3>Tab 2 Content</h3>}
-        {activeTab === 3 && <h3>Tab 3 Content</h3>}
-      </div>
-      <div className="div-editor-tabs">
-        <button onClick={() => handleTabClick(1)}>Tab 1</button>
-        <button onClick={() => handleTabClick(2)}>Tab 2</button>
-        <button onClick={() => handleTabClick(3)}>Tab 3</button>
-      </div>
-    </>
-  );
+    useEffect(() => {
+        if (ElementSelected !== undefined) {
+            setActiveTab(2);
+        }
+        if (ElementSelected === undefined) {
+            setActiveTab(1);
+        }
+    }, [ElementSelected])
+
+    const showTabDetails = () : boolean => {
+        return ElementSelected !== undefined;
+    }
+
+    const showTabReservationsSettings = () : boolean => {
+        return ElementSelected?.isReservable === true && ElementSelected !== undefined;
+    }
+
+    const updateReservations = () => {
+
+        ElementSelected!.isReservable = !ElementSelected?.isReservable;
+        UpdateElement(ElementSelected!);
+
+        const updatedElements = Elements.map(element => {
+            if (element === ElementSelected) {
+                return ElementSelected;
+            }
+            return element;
+        });        
+        UpdateElements(updatedElements);
+    }
+
+    return (
+        <>
+            <div className="div-editor-sidebar-content">
+                {activeTab === 1 && <EditorOverviewInformation CanvasElements={Elements} UpdateElements={UpdateElements} />}
+                {activeTab === 2 && <EditorDetailsInformation Reservations={ElementSelected?.isReservable} UpdateReservations={updateReservations}/>}
+                {activeTab === 3 && <EditorDetailsReservationsSettings />}
+            </div>
+            <div className="div-editor-tabs">
+                <button className="btn-tabs" onClick={() => handleTabClick(1)}>Overview</button>
+                {showTabDetails() && <button className="btn-tabs" onClick={() => handleTabClick(2)}>Details</button>}
+                {showTabReservationsSettings() && <button className="btn-tabs" onClick={() => handleTabClick(3)}>Reservations</button>}
+            </div>
+        </>
+    );
 };
 
 export default EditorSidebar;

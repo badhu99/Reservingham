@@ -4,22 +4,25 @@ import { ElementCircle, ElementRect, CanvasElement } from "../../interfaces/shap
 interface ICanvasProps {
   Elements: CanvasElement[];
   UpdateElements: (updatedElements: CanvasElement[]) => void;
+  SetClickedElement : (element: CanvasElement | undefined) => void;
 }
 
-const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements}) => {
+const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements, SetClickedElement}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  var canvas = canvasRef.current;
-  var ctx = canvas?.getContext("2d");
-  var offsetX = canvas?.getBoundingClientRect()?.left || 0;
-  var offsetY = canvas?.getBoundingClientRect()?.top || 0;
-  var canvasWidth = canvas?.width || 0;
-  var canvasHeight = canvas?.height || 0;
+  var ctx = canvasRef.current?.getContext("2d");
+  var offsetX = canvasRef.current?.getBoundingClientRect()?.left || 0;
+  var offsetY = canvasRef.current?.getBoundingClientRect()?.top || 0;
+  var canvasWidth = canvasRef.current?.width || 0;
+  var canvasHeight = canvasRef.current?.height || 0;
 
   // drag related variables
   const [dragok, setDragok] = React.useState(false);
   const [startX, setStartX] = React.useState(0);
   const [startY, setStartY] = React.useState(0);
+
+  const [hasMoved, setHasMoved] = React.useState(false);
+
 
 
   const draw = () => {
@@ -58,12 +61,11 @@ const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements}) => {
       draw();
     }
     else if(ctx === undefined) {
-      canvas = canvasRef.current;
-      ctx = canvas?.getContext("2d");
-      offsetX = canvas?.getBoundingClientRect()?.left || 0;
-      offsetY = canvas?.getBoundingClientRect()?.top || 0;
-      canvasWidth = canvas?.width || 0;
-      canvasHeight = canvas?.height || 0;
+      ctx = canvasRef.current?.getContext("2d");
+      offsetX = canvasRef.current?.getBoundingClientRect()?.left || 0;
+      offsetY = canvasRef.current?.getBoundingClientRect()?.top || 0;
+      canvasWidth = canvasRef.current?.width || 0;
+      canvasHeight = canvasRef.current?.height || 0;
     }
   }, [ctx, Elements, canvasWidth, canvasHeight]);
 
@@ -77,6 +79,7 @@ const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements}) => {
         if (dragok === false && mx > s.x && mx < s.x + s.width && my > s.y && my < s.y + s.height) {
           setDragok(true);
           s.isDragging = true;
+          setHasMoved(false);
         }
       } else {
         const dx = s.x - mx;
@@ -84,6 +87,7 @@ const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements}) => {
         if (dragok === false && dx * dx + dy * dy < s.r * s.r) {
           setDragok(true);
           s.isDragging = true;
+          setHasMoved(false);
         }
       }
     }
@@ -96,9 +100,21 @@ const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements}) => {
     getClickPosition(e);
 
     setDragok(false);
+    let element: CanvasElement | undefined = undefined;
     for (let i = 0; i < Elements.length; i++) {
+      if(Elements[i].isDragging === true) {
+        element = Elements[i];
+      }
       Elements[i].isDragging = false;
     }
+
+    if(hasMoved) {
+      SetClickedElement(undefined);
+    }
+    else{
+      SetClickedElement(element)
+    }
+    setHasMoved(false);
   };
 
   const myMove = (e: React.MouseEvent) => {
@@ -113,6 +129,7 @@ const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements}) => {
         if (s.isDragging === true) {
           s.x += dx;
           s.y += dy;
+          setHasMoved(true);
         }
       }
 
@@ -121,26 +138,6 @@ const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements}) => {
       UpdateElements(Elements);
     }
   }
-
-  // const onClick = (e: React.MouseEvent) => {
-
-  //   const {mx, my} = getClickPosition(e);
-
-  //   for (let i = 0; i < shapes.length; i++) {
-  //     const s = shapes[i];
-  //     if ("width" in s) {
-  //       if (mx > s.x && mx < s.x + s.width && my > s.y && my < s.y + s.height) {
-  //         console.log(s.name);
-  //       }
-  //     } else {
-  //       const dx = s.x - mx;
-  //       const dy = s.y - my;
-  //       if (dx * dx + dy * dy < s.r * s.r) {
-  //         console.log(s.name);
-  //       }
-  //     }
-  //   }
-  // }
 
   const getClickPosition = (e: React.MouseEvent) => {
 

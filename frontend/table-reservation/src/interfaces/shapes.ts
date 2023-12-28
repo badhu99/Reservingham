@@ -7,6 +7,7 @@ export interface ElementRect {
     height: number;
     fill: string;
     isDragging: boolean;
+    isReservable: boolean;
   }
   
   export interface ElementCircle {
@@ -17,6 +18,7 @@ export interface ElementRect {
     r: number;
     fill: string;
     isDragging: boolean;
+    isReservable: boolean;
   }
 
   export type CanvasElement = ElementRect | ElementCircle;
