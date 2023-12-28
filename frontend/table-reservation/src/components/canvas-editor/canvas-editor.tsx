@@ -4,17 +4,11 @@ import { CircleShape, RectShape, Shape } from "../../interfaces/shapes";
 interface ICanvasProps {
   shapes: Shape[];
   updateShapes: (updatedShapes: Shape[]) => void;
-  updateShape: (updatedShape: Shape) => void;
-  setShapes: React.Dispatch<React.SetStateAction<Shape[]>>;
-  onShapesChange: (newShapes: Shape[]) => void;
 }
 
-const Canvas: React.FC<ICanvasProps> = ({ shapes, updateShapes, updateShape, setShapes, onShapesChange}) => {
+const Canvas: React.FC<ICanvasProps> = ({ shapes, updateShapes}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-const shapesRef = useRef<Shape[]>(shapes);
 
-
-  // get canvas related references
   var canvas = canvasRef.current;
   var ctx = canvas?.getContext("2d");
   var BB = canvas?.getBoundingClientRect();
@@ -24,9 +18,12 @@ const shapesRef = useRef<Shape[]>(shapes);
   var HEIGHT = canvas?.height || 0;
 
   // drag related variables
-  let dragok = false;
-  let startX: number;
-  let startY: number;
+  // let dragok = false;
+  const [dragok, setDragok] = React.useState(false);
+  const [startX, setStartX] = React.useState(0);
+  const [startY, setStartY] = React.useState(0);
+  // let startX: number = 0;
+  // let startY: number = 0;
 
   const draw = () => {
     clear();
@@ -60,11 +57,10 @@ const shapesRef = useRef<Shape[]>(shapes);
   // useEffect to handle canvas setup
   useEffect(() => {
     if (ctx) {
-      console.log("ctx is not undefined");
+      console.log("shapes", shapes);
       draw();
     }
     else if(ctx === undefined) {
-      console.log("ctx is undefined");
       canvas = canvasRef.current;
       ctx = canvas?.getContext("2d");
       BB = canvas?.getBoundingClientRect();
@@ -74,37 +70,39 @@ const shapesRef = useRef<Shape[]>(shapes);
       HEIGHT = canvas?.height || 0;
       // draw();
     }
-  }, [ctx, WIDTH, HEIGHT]);
+  }, [ctx, shapes, WIDTH, HEIGHT]);
 
   // event handlers
   const myDown = (e: React.MouseEvent) => {
     const {mx, my} = getClickPosition(e);
-    dragok = false;
+    setDragok(false);
     for (let i = 0; i < shapes.length; i++) {
       const s = shapes[i];
       if ("width" in s) {
         if (dragok === false && mx > s.x && mx < s.x + s.width && my > s.y && my < s.y + s.height) {
-          dragok = true;
+          setDragok(true);
           s.isDragging = true;
         }
       } else {
         const dx = s.x - mx;
         const dy = s.y - my;
-        if (!dragok && dx * dx + dy * dy < s.r * s.r) {
-          dragok = true;
+        if (dragok === false && dx * dx + dy * dy < s.r * s.r) {
+          setDragok(true);
           s.isDragging = true;
         }
       }
     }
 
-    startX = mx;
-    startY = my;
+    setStartX(mx);
+    setStartY(my);
+    // startX = mx;
+    // startY = my;
   };
 
   const myUp = (e: React.MouseEvent) => {
     getClickPosition(e);
 
-    dragok = false;
+    setDragok(false);
     for (let i = 0; i < shapes.length; i++) {
       shapes[i].isDragging = false;
     }
@@ -113,7 +111,7 @@ const shapesRef = useRef<Shape[]>(shapes);
   };
 
   const myMove = (e: React.MouseEvent) => {
-    if (dragok) {
+    if (dragok === true) {
       const {mx, my} = getClickPosition(e);
 
       const dx = mx - startX;
@@ -124,29 +122,30 @@ const shapesRef = useRef<Shape[]>(shapes);
         if (s.isDragging === true) {
           s.x += dx;
           s.y += dy;
-          // console.log("sx, sy: ", s.x, s.y);
-          console.log("s", s);
           // updateShapeCoordinates(i, s.x, s.y);
         }
       }
 
-      draw();
-      startX = mx;
-      startY = my;
-      // updateShapes(shapes);
+      // draw();
+      setStartX(mx);
+      setStartY(my);
+      // startX = mx;
+      // startY = my;
+      updateShapes(shapes);
     }
   }
 
 
 const updateShapeCoordinates = (shapeIndex: number, newX: number, newY: number) => {
-  const updatedShapes = [...shapesRef.current];
-  const shapeToUpdate = updatedShapes[shapeIndex];
-  shapeToUpdate.x = newX;
-  shapeToUpdate.y = newY;
-  shapesRef.current = updatedShapes;
+  // const updatedShapes = [...shapesRef.current];
+  // const shapeToUpdate = updatedShapes[shapeIndex];
+  // shapeToUpdate.x = newX;
+  // shapeToUpdate.y = newY;
+  // shapesRef.current = updatedShapes;
   // onShapesChange(updatedShapes);
-  updateShapes(updatedShapes);
+  // updateShapes(updatedShapes);
 };
+
 
   // const onClick = (e: React.MouseEvent) => {
 

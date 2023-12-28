@@ -56,25 +56,7 @@ export default function EditorDetails() {
   ]);
 
   const updateShapes = (updatedShapes: Shape[]) => {
-    // setShapes([...updatedShapes]);
-    console.log("updatedShapes", updatedShapes);
-    setShapes((prevShapes) => {
-      return [...updatedShapes];
-    });
-  };
-
-  const updateShape = (updatedShape: Shape) => {
-    const updatedShapes = shapes.map((shape) => {
-      if (shape.id === updatedShape.id) {
-        return { ...shape, ...updatedShape };
-      }
-      return shape;
-    });
-    setShapes(updatedShapes);
-  };
-
-  const handleShapesChange = (newShapes: Shape[]) => {
-    setShapes(newShapes);
+    setShapes([...updatedShapes]);
   };
 
   return (
@@ -82,7 +64,7 @@ export default function EditorDetails() {
       <h1>Editor details</h1>
       <div className="div-container-editor-details">
         <div className="div-editor">
-          <CanvasEditor shapes={shapes} updateShapes={updateShapes} updateShape={updateShape} setShapes={setShapes} onShapesChange={handleShapesChange}/>
+          <CanvasEditor shapes={shapes} updateShapes={updateShapes} />
         </div>
         <div className="div-editor-information">
           <h1>Editor information</h1>
