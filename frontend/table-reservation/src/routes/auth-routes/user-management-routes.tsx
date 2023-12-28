@@ -4,7 +4,7 @@ import { ManagerSinglePage } from "../../pages/manager/manager-single-page";
 import { Roles } from "../../utils/enums/roles";
 import AuthGuard from "../../utils/helpers/guards/auth-guard";
 
-export default [
+const UserManagementRouters = [
   <Route path="users">
     <Route
       path=""
@@ -23,3 +23,4 @@ export default [
     />
   </Route>,
 ];
+export default UserManagementRouters;

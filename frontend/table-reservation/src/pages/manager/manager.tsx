@@ -4,12 +4,14 @@ import { User, GetUsers } from "../../apis/user-api";
 import { Pagination } from "../../classes/pagination";
 import { TableWrapper } from "./components/table-wrapper";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../common/modal";
 
 export default function Manager() {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchParam, setSearchParam] = useState("");
   const [userData, setUserData] = useState<Pagination<User>>();
+  const [openModal, setOpenModal] = useState(true);
 
   useEffect(() => {
     getUserData();
@@ -34,9 +36,16 @@ export default function Manager() {
     console.log(phrase);
   };
 
+  const toggleOpenModal = () => {
+    setOpenModal((prev) => !prev);
+  };
+
   return (
     <>
-      <h1>Manager</h1>
+      <Modal handleClose={toggleOpenModal} show={openModal} title="Invite user">
+        <CreateUser toggleModal={toggleOpenModal} />
+      </Modal>
+      <h1>User manager</h1>
       {userData && (
         <TableWrapper
           pageNumber={pageNumber}
@@ -45,21 +54,35 @@ export default function Manager() {
           previousPage={previousPage}
           nextPage={nextPage}
           search={search}
-          children={<UserTableData data={userData.Items} pageNumber={pageNumber} pageSize={pageSize}/>}
+          openModal={toggleOpenModal}
+          children={
+            <UserTableData
+              data={userData.Items}
+              pageNumber={pageNumber}
+              pageSize={pageSize}
+            />
+          }
         />
       )}
     </>
   );
 }
 
-const UserTableData = ({ data, pageNumber, pageSize }: { data: User[], pageNumber: number, pageSize: number }) => {
+const UserTableData = ({
+  data,
+  pageNumber,
+  pageSize,
+}: {
+  data: User[];
+  pageNumber: number;
+  pageSize: number;
+}) => {
+  let navigate = useNavigate();
 
-  let navigate = useNavigate()
-
-  const editUser = (user:User) => {
+  const editUser = (user: User) => {
     navigate(`./${user.Id}`);
-  }
-    
+  };
+
   return (
     <div className="table-content">
       <table>
@@ -81,17 +104,47 @@ const UserTableData = ({ data, pageNumber, pageSize }: { data: User[], pageNumbe
               return (
                 <tr className="selected" key={item.Id}>
                   <td></td>
-                  <td>{((pageNumber - 1) * pageSize) + index + 1}</td>
+                  <td>{(pageNumber - 1) * pageSize + index + 1}</td>
                   <td>{item.Username}</td>
                   <td>{item.Firstname}</td>
                   <td>{item.Lastname}</td>
                   <td>{item.Email}</td>
-                  <td><button className="btn-git" onClick={() => {editUser(item)}}>Edit</button></td>
+                  <td>
+                    <button
+                      className="btn-git"
+                      onClick={() => {
+                        editUser(item);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </td>
                 </tr>
               );
             })}
         </tbody>
       </table>
+    </div>
+  );
+};
+
+interface ICreateUser {
+  toggleModal: () => void;
+}
+
+const CreateUser: React.FC<ICreateUser> = ({ toggleModal }) => {
+  return (
+    <div className="create-user-content">
+      <div className="div-main">
+        <label>Email:</label>
+        <input type="text" className="input-git" />
+      </div>
+      <div className="div-btn">
+        <button className="btn-git">Invite</button>
+        <button className="btn-git" onClick={toggleModal}>
+          Close
+        </button>
+      </div>
     </div>
   );
 };

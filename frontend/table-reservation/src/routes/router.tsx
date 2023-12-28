@@ -9,7 +9,7 @@ const AppRouting = () => {
         <Routes>
           {AuthRoutes}
           {UnAuthRoutes}
-          {/* {PublicRoutes} */}
+          {PublicRoutes}
         </Routes>
       </BrowserRouter>
     )

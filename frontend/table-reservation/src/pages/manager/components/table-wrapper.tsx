@@ -9,6 +9,7 @@ interface ITableWrapper {
   previousPage: () => void;
   search: (phrase: string) => void;
   children: React.ReactElement;
+  openModal:() => void
 }
 
 export function TableWrapper({
@@ -19,6 +20,8 @@ export function TableWrapper({
   previousPage,
   search,
   children,
+  openModal
+
 }: ITableWrapper) {
   const boolClickPreviousPage = pageNumber > 1;
   const boolClickNextPage = pageNumber * pageSize < allItemsCount;
@@ -30,7 +33,7 @@ export function TableWrapper({
             <span>Filters</span>
             <i className="fa-solid fa-angle-down"></i>
           </a> */}
-        <button className="button">
+        <button className="button" onClick={openModal}>
           <i className="fa-solid fa-plus"></i>
           <span>Add new user</span>
         </button>

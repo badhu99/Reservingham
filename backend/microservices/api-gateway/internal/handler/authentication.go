@@ -19,3 +19,9 @@ func (data *HandlerData) SignIn(w http.ResponseWriter, r *http.Request) {
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodPost, r.Body)
 	functionHandler(w, r)
 }
+
+func (data *HandlerData) Signup(w http.ResponseWriter, r *http.Request) {
+	requestUrl := fmt.Sprintf("%s/user", data.UrlOrganizationManagement)
+	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodPost, r.Body)
+	functionHandler(w, r)
+}

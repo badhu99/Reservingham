@@ -23,7 +23,7 @@ func (data *HandlerData) AddPermission(w http.ResponseWriter, r *http.Request) {
 	userId := vars["userId"]
 	roleId := vars["roleId"]
 
-	requestUrl := fmt.Sprintf("%s/user/%s/%s", data.UrlManagement, userId, roleId)
+	requestUrl := fmt.Sprintf("%s/user/%s/%s", data.UrlOrganizationManagement, userId, roleId)
 	log.Println(requestUrl)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodPost, r.Body)
 	functionHandler(w, r)
@@ -44,7 +44,7 @@ func (data *HandlerData) DeletePermission(w http.ResponseWriter, r *http.Request
 	userId := vars["userId"]
 	roleId := vars["roleId"]
 
-	requestUrl := fmt.Sprintf("%s/user/%s/%s", data.UrlManagement, userId, roleId)
+	requestUrl := fmt.Sprintf("%s/user/%s/%s", data.UrlOrganizationManagement, userId, roleId)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodDelete, r.Body)
 	functionHandler(w, r)
 }

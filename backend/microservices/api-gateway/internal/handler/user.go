@@ -19,7 +19,7 @@ import (
 // @Router		/api/user [get]
 // @Security 	Bearer
 func (data *HandlerData) GetUsers(w http.ResponseWriter, r *http.Request) {
-	requestUrl := fmt.Sprintf("%s/user", data.UrlManagement)
+	requestUrl := fmt.Sprintf("%s/user", data.UrlOrganizationManagement)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodGet, r.Body)
 	functionHandler(w, r)
 }
@@ -38,7 +38,7 @@ func (data *HandlerData) GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 
-	requestUrl := fmt.Sprintf("%s/user/%s", data.UrlManagement, userId)
+	requestUrl := fmt.Sprintf("%s/user/%s", data.UrlOrganizationManagement, userId)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodGet, r.Body)
 	functionHandler(w, r)
 }
@@ -54,7 +54,7 @@ func (data *HandlerData) GetUser(w http.ResponseWriter, r *http.Request) {
 // @Router		/api/user [post]
 // @Security 	Bearer
 func (data *HandlerData) CreateUser(w http.ResponseWriter, r *http.Request) {
-	requestUrl := fmt.Sprintf("%s/user", data.UrlManagement)
+	requestUrl := fmt.Sprintf("%s/user", data.UrlOrganizationManagement)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodPost, r.Body)
 	functionHandler(w, r)
 }
@@ -74,7 +74,7 @@ func (data *HandlerData) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 
-	requestUrl := fmt.Sprintf("%s/user/%s", data.UrlManagement, userId)
+	requestUrl := fmt.Sprintf("%s/user/%s", data.UrlOrganizationManagement, userId)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodPatch, r.Body)
 	functionHandler(w, r)
 }
@@ -93,7 +93,13 @@ func (data *HandlerData) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 
-	requestUrl := fmt.Sprintf("%s/user/%s", data.UrlManagement, userId)
+	requestUrl := fmt.Sprintf("%s/user/%s", data.UrlOrganizationManagement, userId)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodDelete, r.Body)
+	functionHandler(w, r)
+}
+
+func (data *HandlerData) InviteUser(w http.ResponseWriter, r *http.Request) {
+	requestUrl := fmt.Sprintf("%s/user/invite", data.UrlOrganizationManagement)
+	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodPost, r.Body)
 	functionHandler(w, r)
 }

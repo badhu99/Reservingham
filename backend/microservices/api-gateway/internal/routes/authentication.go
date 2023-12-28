@@ -8,4 +8,5 @@ import (
 func AuthRoutes(router *mux.Router, handlerData handler.HandlerData) {
 	routerCompany := router.PathPrefix("/auth").Subrouter()
 	routerCompany.HandleFunc("/signin", handlerData.SignIn).Methods("POST")
+	routerCompany.HandleFunc("/signup", handlerData.Signup).Methods("POST")
 }

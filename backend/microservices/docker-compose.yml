@@ -32,8 +32,8 @@ services:
       networks:
         - network_microservice
 
-  service-management:
-      image: image-service-management
+  service-organization-management:
+      image: image-organization-management-service
       container_name: ${CONTAINER_MANAGEMENT_NAME}
       environment:
         - PORT=${PORT_MANAGEMENT}

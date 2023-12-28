@@ -39,7 +39,6 @@ func (server *Server) AuthRoutes() *mux.Router {
 	}
 
 	router.HandleFunc("/signin", h.SignIn).Methods("POST")
-	router.HandleFunc("/signup", h.SignUp).Methods("POST")
 	router.HandleFunc("/verify", middleware.AuthenticateWrapper(h.ValidateAccessToken)).Methods("GET")
 
 	return router

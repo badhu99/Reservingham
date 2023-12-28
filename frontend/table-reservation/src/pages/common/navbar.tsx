@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <div className="container">
-      <Modal handleClose={ toggleOpenModal } show={openModal}>
+      <Modal handleClose={ toggleOpenModal } show={openModal} title={"Switch company"}>
         <p>Here comes popup</p>
       </Modal>
       <nav>

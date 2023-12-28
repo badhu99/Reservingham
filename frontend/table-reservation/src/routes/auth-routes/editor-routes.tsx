@@ -1,11 +1,28 @@
 import { Route } from "react-router-dom";
-import Editor from "../../pages/editor/editor";
+import {EditorListAll} from "../../pages/editor/editor-list-all";
 import { Roles } from "../../utils/enums/roles";
 import AuthGuard from "../../utils/helpers/guards/auth-guard";
+import EditorDetails from "../../pages/editor/editor-details";
 
-export default [
+
+const EditorRoutes = [
+  <Route path="editor">
     <Route
-    path="/editor"
-    element={<AuthGuard allowedRoles={[Roles.Editor]} element={<Editor />} />}
-  />
-]
+      path=""
+      element={
+        <AuthGuard allowedRoles={[Roles.Editor]} element={<EditorListAll />} />
+      }
+    />
+    <Route
+      path=":id"
+      element={
+        <AuthGuard
+          allowedRoles={[Roles.Editor]}
+          element={<EditorDetails />}
+        />
+      }
+    />
+  </Route>,
+];
+
+export default EditorRoutes;

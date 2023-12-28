@@ -27,7 +27,7 @@ func (handlerData *HandlerData) SignIn(w http.ResponseWriter, r *http.Request) {
 
 	handlerData.Database.
 		Model(userEntity).
-		Where(entity.User{Username: userLogin.Username}).
+		Where("Username = ? OR Email = ?", userLogin.Username, userLogin.Username).
 		Find(&userEntity).
 		Joins("JOIN Permission ON Permission.UserId = [User].Id").
 		Preload("UserRole").

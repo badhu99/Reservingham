@@ -44,7 +44,7 @@ export default function Admin() {
 
   return (
     <div className="admin-page">
-      <Modal show={modalCreateNew} handleClose={toggleModalCreateNew}>
+      <Modal show={modalCreateNew} handleClose={toggleModalCreateNew} title="Admin">
         <p>Hello world</p>
       </Modal>
       <header className="header">
@@ -92,6 +92,7 @@ export default function Admin() {
           previousPage={previousPage}
           nextPage={nextPage}
           search={searchBy}
+          openModal={() => {}}
           children={<CompanyTableData data={companyData.Items}/>}
         />
       )}

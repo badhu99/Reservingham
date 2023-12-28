@@ -44,13 +44,10 @@ func (s *Server) AuthRoutes() *mux.Router {
 	}
 
 	h := handler.HandlerData{
-		UrlAuth:              os.Getenv("URL_AUTH"),
-		UrlManagement:        os.Getenv("URL_MANAGEMENT"),
-		UrlContentManagement: os.Getenv("URL_CONTENT_MANAGEMENT"),
+		UrlAuth:                   os.Getenv("URL_AUTH"),
+		UrlOrganizationManagement: os.Getenv("URL_MANAGEMENT"),
+		UrlContentManagement:      os.Getenv("URL_CONTENT_MANAGEMENT"),
 	}
-
-	log.Println(h.UrlContentManagement)
-	log.Println(h.UrlManagement)
 
 	router := mux.NewRouter()
 	router = router.PathPrefix("/api").Subrouter()

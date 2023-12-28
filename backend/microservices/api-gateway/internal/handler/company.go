@@ -19,7 +19,7 @@ import (
 // @Router		/api/company [get]
 // @Security 	Bearer
 func (data *HandlerData) GetCompanies(w http.ResponseWriter, r *http.Request) {
-	requestUrl := fmt.Sprintf("%s/company", data.UrlManagement)
+	requestUrl := fmt.Sprintf("%s/company", data.UrlOrganizationManagement)
 	log.Println(requestUrl)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodGet, r.Body)
 	functionHandler(w, r)
@@ -39,7 +39,7 @@ func (data *HandlerData) GetCompany(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	companyId := vars["companyId"]
 
-	requestUrl := fmt.Sprintf("%s/company/%s", data.UrlManagement, companyId)
+	requestUrl := fmt.Sprintf("%s/company/%s", data.UrlOrganizationManagement, companyId)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodGet, r.Body)
 	functionHandler(w, r)
 }
@@ -55,7 +55,7 @@ func (data *HandlerData) GetCompany(w http.ResponseWriter, r *http.Request) {
 // @Router		/api/company [post]
 // @Security 	Bearer
 func (data *HandlerData) CreateCompany(w http.ResponseWriter, r *http.Request) {
-	requestUrl := fmt.Sprintf("%s/company", data.UrlManagement)
+	requestUrl := fmt.Sprintf("%s/company", data.UrlOrganizationManagement)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodPost, r.Body)
 	functionHandler(w, r)
 }
@@ -75,7 +75,7 @@ func (data *HandlerData) UpdateCompany(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	companyId := vars["companyId"]
 
-	requestUrl := fmt.Sprintf("%s/company/%s", data.UrlManagement, companyId)
+	requestUrl := fmt.Sprintf("%s/company/%s", data.UrlOrganizationManagement, companyId)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodPatch, r.Body)
 	functionHandler(w, r)
 }
@@ -94,7 +94,7 @@ func (data *HandlerData) DeleteCompany(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	companyId := vars["companyId"]
 
-	requestUrl := fmt.Sprintf("%s/company/%s", data.UrlManagement, companyId)
+	requestUrl := fmt.Sprintf("%s/company/%s", data.UrlOrganizationManagement, companyId)
 	functionHandler := data.HttpRequestBroker(requestUrl, http.MethodDelete, r.Body)
 	functionHandler(w, r)
 }
