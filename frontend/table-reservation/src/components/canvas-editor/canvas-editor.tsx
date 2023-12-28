@@ -1,48 +1,46 @@
 import React, { useRef, useEffect } from "react";
-import { CircleShape, RectShape, Shape } from "../../interfaces/shapes";
+import { ElementCircle, ElementRect, CanvasElement } from "../../interfaces/shapes";
 
 interface ICanvasProps {
-  shapes: Shape[];
-  updateShapes: (updatedShapes: Shape[]) => void;
+  Elements: CanvasElement[];
+  UpdateElements: (updatedElements: CanvasElement[]) => void;
 }
 
-const Canvas: React.FC<ICanvasProps> = ({ shapes, updateShapes}) => {
+const Canvas: React.FC<ICanvasProps> = ({ Elements, UpdateElements}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   var canvas = canvasRef.current;
   var ctx = canvas?.getContext("2d");
-  var BB = canvas?.getBoundingClientRect();
-  var offsetX = BB?.left || 0;
-  var offsetY = BB?.top || 0;
-  var WIDTH = canvas?.width || 0;
-  var HEIGHT = canvas?.height || 0;
+  var offsetX = canvas?.getBoundingClientRect()?.left || 0;
+  var offsetY = canvas?.getBoundingClientRect()?.top || 0;
+  var canvasWidth = canvas?.width || 0;
+  var canvasHeight = canvas?.height || 0;
 
   // drag related variables
-  // let dragok = false;
   const [dragok, setDragok] = React.useState(false);
   const [startX, setStartX] = React.useState(0);
   const [startY, setStartY] = React.useState(0);
-  // let startX: number = 0;
-  // let startY: number = 0;
+
 
   const draw = () => {
     clear();
-    for (let i = 0; i < shapes.length; i++) {
-      if ("width" in shapes[i]) {
-        rect(shapes[i] as RectShape);
+    for (let i = 0; i < Elements.length; i++) {
+      if ("width" in Elements[i]) {
+        rect(Elements[i] as ElementRect);
       } 
       else {
-        circle(shapes[i] as CircleShape);
+        circle(Elements[i] as ElementCircle);
       }
     }
   };
 
-  const rect = (r: RectShape) => {
+
+  const rect = (r: ElementRect) => {
     ctx!.fillStyle = r.fill;
     ctx?.fillRect(r.x, r.y, r.width, r.height);
   };
 
-  const circle = (c: CircleShape) => {
+  const circle = (c: ElementCircle) => {
     ctx!.fillStyle = c.fill;
     ctx?.beginPath();
     ctx?.arc(c.x, c.y, c.r, 0, Math.PI * 2);
@@ -51,33 +49,30 @@ const Canvas: React.FC<ICanvasProps> = ({ shapes, updateShapes}) => {
   };
 
   const clear = () => {
-    ctx?.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx?.clearRect(0, 0, canvasWidth, canvasHeight);
   };
 
   // useEffect to handle canvas setup
   useEffect(() => {
     if (ctx) {
-      console.log("shapes", shapes);
       draw();
     }
     else if(ctx === undefined) {
       canvas = canvasRef.current;
       ctx = canvas?.getContext("2d");
-      BB = canvas?.getBoundingClientRect();
-      offsetX = BB?.left || 0;
-      offsetY = BB?.top || 0;
-      WIDTH = canvas?.width || 0;
-      HEIGHT = canvas?.height || 0;
-      // draw();
+      offsetX = canvas?.getBoundingClientRect()?.left || 0;
+      offsetY = canvas?.getBoundingClientRect()?.top || 0;
+      canvasWidth = canvas?.width || 0;
+      canvasHeight = canvas?.height || 0;
     }
-  }, [ctx, shapes, WIDTH, HEIGHT]);
+  }, [ctx, Elements, canvasWidth, canvasHeight]);
 
   // event handlers
   const myDown = (e: React.MouseEvent) => {
     const {mx, my} = getClickPosition(e);
     setDragok(false);
-    for (let i = 0; i < shapes.length; i++) {
-      const s = shapes[i];
+    for (let i = 0; i < Elements.length; i++) {
+      const s = Elements[i];
       if ("width" in s) {
         if (dragok === false && mx > s.x && mx < s.x + s.width && my > s.y && my < s.y + s.height) {
           setDragok(true);
@@ -95,19 +90,15 @@ const Canvas: React.FC<ICanvasProps> = ({ shapes, updateShapes}) => {
 
     setStartX(mx);
     setStartY(my);
-    // startX = mx;
-    // startY = my;
   };
 
   const myUp = (e: React.MouseEvent) => {
     getClickPosition(e);
 
     setDragok(false);
-    for (let i = 0; i < shapes.length; i++) {
-      shapes[i].isDragging = false;
+    for (let i = 0; i < Elements.length; i++) {
+      Elements[i].isDragging = false;
     }
-
-    // updateShapes(shapes);
   };
 
   const myMove = (e: React.MouseEvent) => {
@@ -117,35 +108,19 @@ const Canvas: React.FC<ICanvasProps> = ({ shapes, updateShapes}) => {
       const dx = mx - startX;
       const dy = my - startY;
 
-      for (let i = 0; i < shapes.length; i++) {
-        const s = shapes[i];
+      for (let i = 0; i < Elements.length; i++) {
+        const s = Elements[i];
         if (s.isDragging === true) {
           s.x += dx;
           s.y += dy;
-          // updateShapeCoordinates(i, s.x, s.y);
         }
       }
 
-      // draw();
       setStartX(mx);
       setStartY(my);
-      // startX = mx;
-      // startY = my;
-      updateShapes(shapes);
+      UpdateElements(Elements);
     }
   }
-
-
-const updateShapeCoordinates = (shapeIndex: number, newX: number, newY: number) => {
-  // const updatedShapes = [...shapesRef.current];
-  // const shapeToUpdate = updatedShapes[shapeIndex];
-  // shapeToUpdate.x = newX;
-  // shapeToUpdate.y = newY;
-  // shapesRef.current = updatedShapes;
-  // onShapesChange(updatedShapes);
-  // updateShapes(updatedShapes);
-};
-
 
   // const onClick = (e: React.MouseEvent) => {
 

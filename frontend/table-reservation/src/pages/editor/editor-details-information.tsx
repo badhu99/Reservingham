@@ -1,21 +1,17 @@
 import React, { useEffect } from 'react';
-import { Shape } from '../../interfaces/shapes';
+import { CanvasElement } from '../../interfaces/shapes';
 
 
 interface IEditorDetailsInformationProps {
-    shapes: Shape[];
+    canvasElements: CanvasElement[];
   }
-const EditorDetailsInformation: React.FC<IEditorDetailsInformationProps> = ({shapes}) => {
+const EditorDetailsInformation: React.FC<IEditorDetailsInformationProps> = ({canvasElements}) => {
 
-    const displayShapes = () => {
-        console.log("shapes", shapes);
-    }
     return (
         <div>
-            {shapes.map((shape) => (
+            {canvasElements.map((shape) => (
                 <p>Name: {shape.name}, x: {shape.x}, y: {shape.y}</p>
             ))}
-            <button onClick={displayShapes}>Update</button>
         </div>
     );
 };

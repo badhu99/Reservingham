@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import CanvasEditor from "../../components/canvas-editor/canvas-editor";
-import { CircleShape, RectShape, Shape } from "../../interfaces/shapes";
+import { CanvasElement } from "../../interfaces/shapes";
 import EditorDetailsInformation from "./editor-details-information";
+import EditorSidebar from "./editor-sidebar";
 
 export default function EditorDetails() {
-  const [shapes, setShapes] = useState<Shape[]>([
+  const [elements, setElements] = useState<CanvasElement[]>([
     {
       id: "640ab176-ce44-4e1f-afae-5121578610c4",
       name: "rect1",
@@ -26,21 +27,21 @@ export default function EditorDetails() {
       isDragging: false,
     },
     {
-      id: "23732654-6b10-40af-82e9-e3fbf43dfaa1",
-      name: "circle1",
-      x: 150,
-      y: 100,
-      r: 10,
-      fill: "#800080",
-      isDragging: false,
-    },
-    {
       id: "9ef59004-5ea2-43f9-90a0-d0065a92fabd",
       name: "circle2",
       x: 200,
       y: 100,
       r: 10,
       fill: "#0c64e8",
+      isDragging: false,
+    },
+    {
+      id: "23732654-6b10-40af-82e9-e3fbf43dfaa1",
+      name: "circle1",
+      x: 150,
+      y: 100,
+      r: 10,
+      fill: "#800080",
       isDragging: false,
     },
     {
@@ -55,8 +56,8 @@ export default function EditorDetails() {
     },
   ]);
 
-  const updateShapes = (updatedShapes: Shape[]) => {
-    setShapes([...updatedShapes]);
+  const updateElements = (updatedShapes: CanvasElement[]) => {
+    setElements([...updatedShapes]);
   };
 
   return (
@@ -64,13 +65,11 @@ export default function EditorDetails() {
       <h1>Editor details</h1>
       <div className="div-container-editor-details">
         <div className="div-editor">
-          <CanvasEditor shapes={shapes} updateShapes={updateShapes} />
+          <CanvasEditor Elements={elements} UpdateElements={updateElements} />
         </div>
-        <div className="div-editor-information">
-          <h1>Editor information</h1>
-          <div className="div-editor-information-container">
-            <EditorDetailsInformation shapes={shapes} />
-          </div>
+        <div className="div-container-editor-sidebar">
+          <EditorSidebar Elements={elements}/>
+          {/* <EditorDetailsInformation shapes={shapes} /> */}
         </div>
       </div>
     </>

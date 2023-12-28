@@ -1,4 +1,4 @@
-export interface RectShape {
+export interface ElementRect {
     id: string;
     name:string;
     x: number;
@@ -9,7 +9,7 @@ export interface RectShape {
     isDragging: boolean;
   }
   
-  export interface CircleShape {
+  export interface ElementCircle {
     id: string;
     name:string;
     x: number;
@@ -19,4 +19,4 @@ export interface RectShape {
     isDragging: boolean;
   }
 
-  export type Shape = RectShape | CircleShape;
+  export type CanvasElement = ElementRect | ElementCircle;
